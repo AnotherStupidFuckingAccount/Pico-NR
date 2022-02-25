@@ -2,93 +2,208 @@ sensor:
   - platform: mqtt
     name: "Van Running"
     state_topic: "/pico/van/power"
+
   - platform: mqtt
     name: "PICO Pressure"
     state_topic: "/pico/environment/pressure"
+    unit_of_measurement: mbar
+    device_class: pressure
+
   - platform: mqtt
     name: "PICO Voltage"
     state_topic: "/pico/electrical/voltmeter/PICO INTERNAL/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
   - platform: mqtt
     name: "House Battery current"
     state_topic: "/pico/electrical/ammeter/SC302T 6573/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
-    name: "SC302T 6573 U1"
+    name: "House Battery Voltage"
     state_topic: "/pico/electrical/voltmeter/SC302T 6573 U1/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
   - platform: mqtt
-    name: "SC302T 6573 U2"
+    name: "Tank Select"
     state_topic: "/pico/electrical/voltmeter/SC302T 6573 U2/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
+#  - platform: mqtt
+#    name: "SC302T 6573 R1"
+#    state_topic: "/pico/electrical/ohmmeter/SC302T 6573 R1/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+#  - platform: mqtt
+#    name: "SC302T 6573 R2"
+#    state_topic: "/pico/electrical/ohmmeter/SC302T 6573 R2/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
   - platform: mqtt
-    name: "SC302T 6573 R1"
-    state_topic: "/pico/electrical/ohmmeter/SC302T 6573 R1/ohms"
-  - platform: mqtt
-    name: "SC302T 6573 R2"
-    state_topic: "/pico/electrical/ohmmeter/SC302T 6573 R2/ohms"
-  - platform: mqtt
-    name: "SC302T 7065"
+    name: "Inverter Current"
     state_topic: "/pico/electrical/ammeter/SC302T 7065/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
     name: "SC302T 7065 U1"
     state_topic: "/pico/electrical/voltmeter/SC302T 7065 U1/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
   - platform: mqtt
     name: "SC302T 7065 U2"
     state_topic: "/pico/electrical/voltmeter/SC302T 7065 U2/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
+#  - platform: mqtt
+#    name: "SC302T 7065 R1"
+#    state_topic: "/pico/electrical/ohmmeter/SC302T 7065 R1/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+
+#  - platform: mqtt
+#    name: "SC302T 7065 R2"
+#    state_topic: "/pico/electrical/ohmmeter/SC302T 7065 R2/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+
   - platform: mqtt
-    name: "SC302T 7065 R1"
-    state_topic: "/pico/electrical/ohmmeter/SC302T 7065 R1/ohms"
-  - platform: mqtt
-    name: "SC302T 7065 R2"
-    state_topic: "/pico/electrical/ohmmeter/SC302T 7065 R2/ohms"
-  - platform: mqtt
-    name: "SCQ25T 2172 1"
+    name: "Load Current"
     state_topic: "/pico/electrical/ammeter/SCQ25T 2172 1/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
-    name: "SCQ25T 2172 2"
+    name: "Charge In"
     state_topic: "/pico/electrical/ammeter/SCQ25T 2172 2/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
-    name: "SCQ25T 2172 3"
+    name: "Start Charge In"
     state_topic: "/pico/electrical/ammeter/SCQ25T 2172 3/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
-    name: "SCQ25T 2172 4"
+    name: "Solar Charge In"
     state_topic: "/pico/electrical/ammeter/SCQ25T 2172 4/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
-    name: "SCQ25T 2172 U1"
+    name: "Solar Voltage"
     state_topic: "/pico/electrical/voltmeter/SCQ25T 2172 U1/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
   - platform: mqtt
-    name: "SCQ25T 2172 U2"
+    name: "Start Voltage"
     state_topic: "/pico/electrical/voltmeter/SCQ25T 2172 U2/voltage"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
   - platform: mqtt
-    name: "SCQ25T 2172 U3"
+    name: "House Voltage"
     state_topic: "/pico/electrical/voltmeter/SCQ25T 2172 U3/voltage"
-  - platform: mqtt
-    name: "SCQ25T 2172 R1"
-    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R1/ohms"
-  - platform: mqtt
-    name: "SCQ25T 2172 R2"
-    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R2/ohms"
-  - platform: mqtt
-    name: "SCQ25T 2172 R3"
-    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R3/ohms"
-  - platform: mqtt
-    name: "SCQ25T 2172 R4"
-    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R4/ohms"
+    device_class: voltage
+    unit_of_measurement: V
+    state_class: measurement
+
+#  - platform: mqtt
+#    name: "Tank_Front Resistance"
+#    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R1/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+
+#  - platform: mqtt
+#    name: "Tank_Rear Resistance"
+#    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R2/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+
+#  - platform: mqtt
+#    name: "Tank_Diesel Resistance"
+#    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R3/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+
+#  - platform: mqtt
+#    name: "SCQ25T 2172 R4"
+#    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R4/ohms"
+#    unit_of_measurement: Ohms
+#    state_class: measurement
+
+
   - platform: mqtt
     name: "HOUSE Battery Capacity"
     state_topic: "/pico/electrical/batteries/HOUSE/capacity/nominal"
+    device_class: battery
+    unit_of_measurement: AH
+    state_class: measurement
+
+
   - platform: mqtt
     name: "HOUSE Battery Temperature"
     state_topic: "/pico/electrical/batteries/HOUSE/temperature"
+    device_class: temperature
+    unit_of_measurement: °F
+    state_class: measurement
+
   - platform: mqtt
     name: "HOUSE Battery Current"
     state_topic: "/pico/electrical/batteries/HOUSE/current"
+    device_class: current
+    unit_of_measurement: A
+    state_class: measurement
+
   - platform: mqtt
     name: "HOUSE Battery Capacity Remaining"
     state_topic: "/pico/electrical/batteries/HOUSE/capacity/remaining"
+    device_class: battery
+    unit_of_measurement: AH
+    state_class: measurement
+
   - platform: mqtt
     name: "HOUSE Battery SOC"
     state_topic: "/pico/electrical/batteries/HOUSE/stateOfCharge"
+    device_class: battery
+    unit_of_measurement: %
+    state_class: measurement
+
   - platform: mqtt
     name: "HOUSE Temperature"
     state_topic: "/pico/environment/temperature/HOUSE"
+    device_class: temperature
+    unit_of_measurement: °F
+    state_class: measurement
+
   - platform: mqtt
     name: "Pico AlarmRelay"
     state_topic: "/pico/alarmRelay"
@@ -96,33 +211,69 @@ sensor:
   - platform: mqtt
     name: "TANK-Front Current Level"
     state_topic: "/pico/tanks/fuel/TANK_Front/currentLevel"
+    unit_of_measurement: %
+    device_class: gas
+    state_class: measurement
+
   - platform: mqtt
     name: "TANK-Front Current Volume"
     state_topic: "/pico/tanks/fuel/TANK_Front/currentVolume"
+    device_class: gas
+    unit_of_measurement: gal
+    state_class: measurement
+
   - platform: mqtt
     name: "TANK-Front Capacity"
     state_topic: "/pico/tanks/fuel/TANK_Front/capacity"
+    device_class: gas
+    unit_of_measurement: gal
+    state_class: measurement
 
   - platform: mqtt
     name: "TANK-Rear Current Level"
     state_topic: "/pico/tanks/fuel/TANK_Rear/currentLevel"
+    unit_of_measurement: %
+    device_class: gas
+    state_class: measurement
+
   - platform: mqtt
     name: "TANK-Rear Current Volume"
     state_topic: "/pico/tanks/fuel/TANK_Rear/currentVolume"
+    device_class: gas
+    unit_of_measurement: gal
+    state_class: measurement
+
   - platform: mqtt
     name: "TANK-Rear Capacity"
     state_topic: "/pico/tanks/fuel/TANK_Rear/capacity"
+    device_class: gas
+    unit_of_measurement: gal
+    state_class: measurement
 
   - platform: mqtt
     name: "TANK-Diesel Current Level"
     state_topic: "/pico/tanks/fuel/TANK_Diesel/currentLevel"
+    unit_of_measurement: %
+    device_class: gas
+    state_class: measurement
+
   - platform: mqtt
     name: "TANK-Diesel Current Volume"
     state_topic: "/pico/tanks/fuel/TANK_Diesel/currentVolume"
+    device_class: gas
+    unit_of_measurement: gal
+    state_class: measurement
+
   - platform: mqtt
     name: "TANK-Diesel Capacity"
     state_topic: "/pico/tanks/fuel/TANK_Diesel/capacity"
+    device_class: gas
+    unit_of_measurement: gal
+    state_class: measurement
 
   - platform: mqtt
     name: "INSIDE Temperature"
     state_topic: "/pico/environment/temperature/INSIDE"
+    device_class: temperature
+    unit_of_measurement: °F
+    state_class: measurement
