@@ -1,0 +1,128 @@
+sensor:
+  - platform: mqtt
+    name: "Van Running"
+    state_topic: "/pico/van/power"
+  - platform: mqtt
+    name: "PICO Pressure"
+    state_topic: "/pico/environment/pressure"
+  - platform: mqtt
+    name: "PICO Voltage"
+    state_topic: "/pico/electrical/voltmeter/PICO INTERNAL/voltage"
+  - platform: mqtt
+    name: "House Battery current"
+    state_topic: "/pico/electrical/ammeter/SC302T 6573/current"
+  - platform: mqtt
+    name: "SC302T 6573 U1"
+    state_topic: "/pico/electrical/voltmeter/SC302T 6573 U1/voltage"
+  - platform: mqtt
+    name: "SC302T 6573 U2"
+    state_topic: "/pico/electrical/voltmeter/SC302T 6573 U2/voltage"
+  - platform: mqtt
+    name: "SC302T 6573 R1"
+    state_topic: "/pico/electrical/ohmmeter/SC302T 6573 R1/ohms"
+  - platform: mqtt
+    name: "SC302T 6573 R2"
+    state_topic: "/pico/electrical/ohmmeter/SC302T 6573 R2/ohms"
+  - platform: mqtt
+    name: "SC302T 7065"
+    state_topic: "/pico/electrical/ammeter/SC302T 7065/current"
+  - platform: mqtt
+    name: "SC302T 7065 U1"
+    state_topic: "/pico/electrical/voltmeter/SC302T 7065 U1/voltage"
+  - platform: mqtt
+    name: "SC302T 7065 U2"
+    state_topic: "/pico/electrical/voltmeter/SC302T 7065 U2/voltage"
+  - platform: mqtt
+    name: "SC302T 7065 R1"
+    state_topic: "/pico/electrical/ohmmeter/SC302T 7065 R1/ohms"
+  - platform: mqtt
+    name: "SC302T 7065 R2"
+    state_topic: "/pico/electrical/ohmmeter/SC302T 7065 R2/ohms"
+  - platform: mqtt
+    name: "SCQ25T 2172 1"
+    state_topic: "/pico/electrical/ammeter/SCQ25T 2172 1/current"
+  - platform: mqtt
+    name: "SCQ25T 2172 2"
+    state_topic: "/pico/electrical/ammeter/SCQ25T 2172 2/current"
+  - platform: mqtt
+    name: "SCQ25T 2172 3"
+    state_topic: "/pico/electrical/ammeter/SCQ25T 2172 3/current"
+  - platform: mqtt
+    name: "SCQ25T 2172 4"
+    state_topic: "/pico/electrical/ammeter/SCQ25T 2172 4/current"
+  - platform: mqtt
+    name: "SCQ25T 2172 U1"
+    state_topic: "/pico/electrical/voltmeter/SCQ25T 2172 U1/voltage"
+  - platform: mqtt
+    name: "SCQ25T 2172 U2"
+    state_topic: "/pico/electrical/voltmeter/SCQ25T 2172 U2/voltage"
+  - platform: mqtt
+    name: "SCQ25T 2172 U3"
+    state_topic: "/pico/electrical/voltmeter/SCQ25T 2172 U3/voltage"
+  - platform: mqtt
+    name: "SCQ25T 2172 R1"
+    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R1/ohms"
+  - platform: mqtt
+    name: "SCQ25T 2172 R2"
+    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R2/ohms"
+  - platform: mqtt
+    name: "SCQ25T 2172 R3"
+    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R3/ohms"
+  - platform: mqtt
+    name: "SCQ25T 2172 R4"
+    state_topic: "/pico/electrical/ohmmeter/SCQ25T 2172 R4/ohms"
+  - platform: mqtt
+    name: "HOUSE Battery Capacity"
+    state_topic: "/pico/electrical/batteries/HOUSE/capacity/nominal"
+  - platform: mqtt
+    name: "HOUSE Battery Temperature"
+    state_topic: "/pico/electrical/batteries/HOUSE/temperature"
+  - platform: mqtt
+    name: "HOUSE Battery Current"
+    state_topic: "/pico/electrical/batteries/HOUSE/current"
+  - platform: mqtt
+    name: "HOUSE Battery Capacity Remaining"
+    state_topic: "/pico/electrical/batteries/HOUSE/capacity/remaining"
+  - platform: mqtt
+    name: "HOUSE Battery SOC"
+    state_topic: "/pico/electrical/batteries/HOUSE/stateOfCharge"
+  - platform: mqtt
+    name: "HOUSE Temperature"
+    state_topic: "/pico/environment/temperature/HOUSE"
+  - platform: mqtt
+    name: "Pico AlarmRelay"
+    state_topic: "/pico/alarmRelay"
+
+  - platform: mqtt
+    name: "TANK-Front Current Level"
+    state_topic: "/pico/tanks/fuel/TANK_Front/currentLevel"
+  - platform: mqtt
+    name: "TANK-Front Current Volume"
+    state_topic: "/pico/tanks/fuel/TANK_Front/currentVolume"
+  - platform: mqtt
+    name: "TANK-Front Capacity"
+    state_topic: "/pico/tanks/fuel/TANK_Front/capacity"
+
+  - platform: mqtt
+    name: "TANK-Rear Current Level"
+    state_topic: "/pico/tanks/fuel/TANK_Rear/currentLevel"
+  - platform: mqtt
+    name: "TANK-Rear Current Volume"
+    state_topic: "/pico/tanks/fuel/TANK_Rear/currentVolume"
+  - platform: mqtt
+    name: "TANK-Rear Capacity"
+    state_topic: "/pico/tanks/fuel/TANK_Rear/capacity"
+
+  - platform: mqtt
+    name: "TANK-Diesel Current Level"
+    state_topic: "/pico/tanks/fuel/TANK_Diesel/currentLevel"
+  - platform: mqtt
+    name: "TANK-Diesel Current Volume"
+    state_topic: "/pico/tanks/fuel/TANK_Diesel/currentVolume"
+  - platform: mqtt
+    name: "TANK-Diesel Capacity"
+    state_topic: "/pico/tanks/fuel/TANK_Diesel/capacity"
+
+  - platform: mqtt
+    name: "INSIDE Temperature"
+    state_topic: "/pico/environment/temperature/INSIDE"
