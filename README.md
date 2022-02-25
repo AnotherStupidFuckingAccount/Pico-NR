@@ -13,6 +13,8 @@ I diff the json and only upload changes. Every 10 minutes I kill the script in N
 
 I'd suggest you fix your device names in the Pico first, since the MQTT topics are based on device names. I haven't done that in this example yet, but it would require changing the pico.yaml for Home Assistant also. Save yourself time and do it first, or don't, since you can name it whatever you want in Home Assistant.
 
+I'll add the NodeRed flow soon.
+
 Produces json, which is processed by NodeRed:
 [{'topic': '/pico/van/power', 'payload': 'OFF'}, 
 {'topic': '/pico/environment/pressure', 'payload': 1025.72}, 
