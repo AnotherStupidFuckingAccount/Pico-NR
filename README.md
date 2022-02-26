@@ -11,7 +11,7 @@ Use the debugs to determine the sensorlist for IDs (Line 208 or 255), then eleme
 
 I diff the json and only upload changes. Every 10 minutes I kill the script in NodeRed and restart (not in this flow yet), since old values which don't change will never be updated, in the case of a Home Assistant restart.
 
-I'd suggest you fix your device names in the Pico first, since the MQTT topics are based on device names. I haven't done that in this example yet, but it would require changing the pico.yaml for Home Assistant also. Save yourself time and do it first, or don't, since you can name it whatever you want in Home Assistant.
+I'd suggest you fix your device names in the Pico first, since the MQTT topics are based on device names. I haven't done that in this example yet, but it would require changing the pico.yaml for Home Assistant also. Save yourself time and do it first, or don't, since you can name it whatever you want in Home Assistant (Actually, this is easier).
 
 Produces json, which is processed by NodeRed:
 [{'topic': '/pico/van/power', 'payload': 'OFF'}, 
