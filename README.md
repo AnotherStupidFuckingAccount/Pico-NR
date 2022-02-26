@@ -7,13 +7,11 @@ This requires a lot of manual preparation.
 
 Still hardcoded to my devices. I added 1x 302 shunt and figured out the addresses. Then added the second 302, then the SCQ. Adding a battery, thermometers, and tanks will add new registers also... If devices are added, but not given IDs then the script bombs, because it sees a thermometer and doesn't know what to do (for instance). To fix, it's all got to be done manually right now, but maybe someone smarter than I can probably figure out how to automate it.
 
-Use the debugs to determine the sensorlist for IDs (Line 208 or 255), then element registers for values (Line 282).
+Use the debugs to determine the sensorlist for IDs (Line 208 or 255), then element registers for values (Line 282). You'll have to do some work to figure what registers are for what values... Temps are in celcius, and tanks are in liters for example. It's not difficult, you just need to add one device at a time and see what elements change.
 
-I diff the json and only upload changes. Every 10 minutes I kill the script in NodeRed and restart, since old values which don't change will never be updated, in the case of a Home Assistant restart.
+I diff the json and only upload changes. Every 10 minutes I kill the script in NodeRed and restart (not in this flow yet), since old values which don't change will never be updated, in the case of a Home Assistant restart.
 
 I'd suggest you fix your device names in the Pico first, since the MQTT topics are based on device names. I haven't done that in this example yet, but it would require changing the pico.yaml for Home Assistant also. Save yourself time and do it first, or don't, since you can name it whatever you want in Home Assistant.
-
-I'll add the NodeRed flow soon.
 
 Produces json, which is processed by NodeRed:
 [{'topic': '/pico/van/power', 'payload': 'OFF'}, 
