@@ -23,12 +23,12 @@ sensor:
     unit_of_measurement: A
     state_class: measurement
 
-  - platform: mqtt
-    name: "House Battery Voltage"
-    state_topic: "/pico/electrical/voltmeter/SC302T 6573 U1/voltage"
-    device_class: voltage
-    unit_of_measurement: V
-    state_class: measurement
+#  - platform: mqtt
+#    name: "House Battery Voltage"
+#    state_topic: "/pico/electrical/voltmeter/SC302T 6573 U1/voltage"
+#    device_class: voltage
+#    unit_of_measurement: V
+#    state_class: measurement
 
   - platform: mqtt
     name: "Tank Select"
@@ -211,7 +211,7 @@ sensor:
   - platform: mqtt
     name: "TANK-Front Current Level"
     state_topic: "/pico/tanks/fuel/TANK_Front/currentLevel"
-    unit_of_measurement: %
+    unit_of_measurement: "%"
     device_class: gas
     state_class: measurement
 
@@ -232,7 +232,7 @@ sensor:
   - platform: mqtt
     name: "TANK-Rear Current Level"
     state_topic: "/pico/tanks/fuel/TANK_Rear/currentLevel"
-    unit_of_measurement: %
+    unit_of_measurement: "%"
     device_class: gas
     state_class: measurement
 
@@ -253,7 +253,7 @@ sensor:
   - platform: mqtt
     name: "TANK-Diesel Current Level"
     state_topic: "/pico/tanks/fuel/TANK_Diesel/currentLevel"
-    unit_of_measurement: %
+    unit_of_measurement: "%"
     device_class: gas
     state_class: measurement
 
