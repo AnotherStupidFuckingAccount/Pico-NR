@@ -3,6 +3,8 @@ Pico to NodeRed for use in Home Assistant
 
 Simarine Pico to NodeRed blatantly ripped from https://github.com/htool/Pico2SignalK. I had to combine brainsmoke.py since I kept forgetting to keep both files together.
 
+Import the flow into Node-red. Put the .py in the python_scripts folder in Home Assistant. Add automations to Home Assistant from automations.yaml. You're going to have to create a few input.booleans in order to get the automations working, but that's easy enough to accomplish. Node-red monitors input_boolean.home_assistant_restart in order to restart the py script in case things get hung up somehow.
+
 This requires a lot of manual preparation.
 
 Still hardcoded to my devices. I added 1x 302 shunt and figured out the addresses. Then added the second 302, then the SCQ. Adding a battery, thermometers, and tanks will add new registers also... If devices are added, but not given IDs then the script bombs, because it sees a thermometer and doesn't know what to do (for instance). To fix, it's all got to be done manually right now, but maybe someone smarter than I can probably figure out how to automate it.
