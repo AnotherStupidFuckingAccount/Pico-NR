@@ -1,0 +1,39 @@
+panel_iframe:
+  nodered:
+    title: 'Node-Red'
+    url: 'http://192.168.1.18:1880'
+    icon: mdi:sitemap
+
+sensor:
+  - platform: mqtt
+    name: "GPS"
+    expire_after: 10
+    state_topic: "/nodered/gps/lock"
+    value_template: "{{ value_json.lock }}"
+    json_attributes_topic: "/nodered/gps/lock"
+    icon: "mdi:crosshairs-gps"
+    availability_topic: "/nodered/gps/availability"
+    payload_available: online
+    payload_not_available: offline
+
+automation:
+  alias: 'Move Home'
+  description: 'Move Home'
+  trigger:
+  - platform: template
+    value_template: '{{ is_state("sensor.gps", "3D Fix") and distance( "sensor.gps", "zone.home" ) | float > 1 }}'
+  condition:
+  - condition: template
+    value_template: '{{ state_attr("sensor.gps","speed") | float < 5 }}'
+  action:
+  - data_template:
+      message: 'Van to Home distance of {{ distance( "sensor.gps", "zone.home" ) | round(2) }} miles, changing Home location.'
+      notification_id: movedhome
+      title: Moved Home
+    service: persistent_notification.create
+  - data_template:
+      latitude: '{{  state_attr("sensor.gps","latitude") }}'
+      longitude: '{{ state_attr("sensor.gps","longitude") }}'
+    service: homeassistant.set_location
+#  - data: {}
+#    service: homeassistant.reload_core_config

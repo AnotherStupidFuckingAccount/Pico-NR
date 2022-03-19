@@ -199,46 +199,46 @@ def toTemperature (temp):
   temp2 = float(("%.2f" % round((temp * .18) + 32, 2)))
   return temp2
 
-def createSensorList (config):
-  sensorList = {}
+def createDeviceList (config):
+  deviceList = {}
   fluid = ['Unknown', 'freshWater', 'fuel', 'wasteWater']  # Simarine fluid types
   # Fluidtype label
   for entry in config.keys():
-#DEBUG SensorList
+#DEBUG deviceList
 #    debug( config[entry])
     id = config[entry][0][1]
     type = config[entry][1][1]
-    sensorList[id] = {}
+    deviceList[id] = {}
     if (type == 1):
       type = 'voltmeter'
-      sensorList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'name': config[entry][3]})
     if (type == 2):
       type = 'ammeter'
-      sensorList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'name': config[entry][3]})
     if (type == 3):
       type = 'thermometer'
-      sensorList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'name': config[entry][3]})
     if (type == 5):
       type = 'barometer'
-      sensorList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'name': config[entry][3]})
     if (type == 6):
       type = 'ohmmeter'
-      sensorList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'name': config[entry][3]})
     if (type == 8):
       type = 'tank'
-      sensorList[id].update ({'name': config[entry][3]})
-      sensorList[id].update ({'capacity': round(float(config[entry][7][1]) / 10 * 0.26417,1)})
-      sensorList[id].update ({'fluid': fluid[config[entry][6][1]]})
+      deviceList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'capacity': round(float(config[entry][7][1]) / 10 * 0.26417,1)})
+      deviceList[id].update ({'fluid': fluid[config[entry][6][1]]})
     if (type == 9):
       type = 'battery'
-      sensorList[id].update ({'name': config[entry][3]})
-      sensorList[id].update ({'capacity.nominal': config[entry][5][1] / 100 })
+      deviceList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'capacity.nominal': config[entry][5][1] / 100 })
     if (type == 14):
       type = 'alarmRelay'
-      sensorList[id].update ({'name': config[entry][3]})
+      deviceList[id].update ({'name': config[entry][3]})
 
-    sensorList[id].update ({'type': type})
-  return sensorList
+    deviceList[id].update ({'type': type})
+  return deviceList
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -246,23 +246,27 @@ client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 client.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 client.bind(("", 43210))
 
+# Assign pico address
 message, addr = client.recvfrom(2048)
 pico_ip = addr[0]
+#debug("See Pico at " + str(pico_ip))
 
 config = get_pico_config(pico_ip)
+#debug(config)
 
-sensorList = createSensorList(config)
-#debug(sensorList)
+deviceList = createDeviceList(config)
+#debug(deviceList)
 
 responseB = [''] * 50
 responseC = []
 
 old_pico = {}
+counter = 0
 
 # Main loop
 while True:
     pico = []
-    sensorListTmp = copy.deepcopy(sensorList)
+    deviceListTmp = copy.deepcopy(deviceList)
 
     message = ''
     while True:
@@ -286,311 +290,311 @@ while True:
 
 # Built-in   --------------------------------------
 # Barometer
-    sensorListTmp_id = 5
+    deviceListTmp_id = 5
     element_id = 3
-    sensorListTmp[sensorListTmp_id].update({'pressure':((element[element_id][1] + 65536) / 100)})
+    deviceListTmp[deviceListTmp_id].update({'pressure':((element[element_id][1] + 65536) / 100)})
 
 # Voltmeter
-    sensorListTmp_id = 6
+    deviceListTmp_id = 6
     element_id = 5
     if (element[element_id][1] != 65535):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
 
 # SC302T #1 --------------------------------------
 # Ammeter
-    sensorListTmp_id = 10
+    deviceListTmp_id = 10
     element_id = 11
     current = element[element_id][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1  # (Reversed)
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 
 # U1 Voltmeter
-    sensorListTmp_id = 11
+    deviceListTmp_id = 11
     element_id = 13
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # U2 Voltmeter
-    sensorListTmp_id = 12
+    deviceListTmp_id = 12
     element_id = 14
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # R1 Ohmmeter
-    sensorListTmp_id = 13
+    deviceListTmp_id = 13
     element_id = 15
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 # R2 Ohmmeter
-    sensorListTmp_id = 14
+    deviceListTmp_id = 14
     element_id = 16
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 
 # SC302T #2 --------------------------------------
 # Ammeter
-    sensorListTmp_id = 15
+    deviceListTmp_id = 15
     element_id = 17
     current = element[element_id][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1  # (Reversed)
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 
 # U1 Voltmeter
-    sensorListTmp_id = 16
+    deviceListTmp_id = 16
     element_id = 19
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # U2 Voltmeter
-    sensorListTmp_id = 17
+    deviceListTmp_id = 17
     element_id = 20
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # R1 Ohmmeter
-    sensorListTmp_id = 18
+    deviceListTmp_id = 18
     element_id = 21
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 # R2 Ohmmeter
-    sensorListTmp_id = 19
+    deviceListTmp_id = 19
     element_id = 22
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 # SCQ25T  ----------------------------
 # Ammeter 1
-    sensorListTmp_id = 20
+    deviceListTmp_id = 20
     element_id = 23
     current = element[element_id][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 
 # Ammeter 2
-    sensorListTmp_id = 21
+    deviceListTmp_id = 21
     element_id = 25
     current = element[element_id][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 
 # Ammeter 3
-    sensorListTmp_id = 22
+    deviceListTmp_id = 22
     element_id = 27
     current = element[element_id][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 
 # Ammeter 4
-    sensorListTmp_id = 23
+    deviceListTmp_id = 23
     element_id = 29
     current = element[element_id][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 
 # U1 Voltmeter
-    sensorListTmp_id = 24
+    deviceListTmp_id = 24
     element_id = 31
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # U2 Voltmeter
-    sensorListTmp_id = 25
+    deviceListTmp_id = 25
     element_id = 32
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # U3 Voltmeter
-    sensorListTmp_id = 26
+    deviceListTmp_id = 26
     element_id = 33
     if (element[element_id][1] <= 65530):
-      sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
+      deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id][1] / 1000,1)})
     else:
-      sensorListTmp[sensorListTmp_id].update({'voltage':'0.0'})
+      deviceListTmp[deviceListTmp_id].update({'voltage':'0.0'})
 
 # R1 Ohmmeter
-    sensorListTmp_id = 27
+    deviceListTmp_id = 27
     element_id = 34
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 # R2 Ohmmeter
-    sensorListTmp_id = 28
+    deviceListTmp_id = 28
     element_id = 35
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 # R3 Ohmmeter
-    sensorListTmp_id = 29
+    deviceListTmp_id = 29
     element_id = 36
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
 # R4 Ohmmeter
-    sensorListTmp_id = 30
+    deviceListTmp_id = 30
     element_id = 37
     if (element[element_id][1] == 65535):
-      sensorListTmp[sensorListTmp_id].update({'ohms': "OPEN" })
+      deviceListTmp[deviceListTmp_id].update({'ohms': "OPEN" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'ohms': element[element_id][1] })
+      deviceListTmp[deviceListTmp_id].update({'ohms': element[element_id][1] })
 
-# Relay
-    sensorListTmp_id = 31
+# alarmRelay
+    deviceListTmp_id = 31
     element_id = 38
     if (element[element_id][1] == 1):
-      sensorListTmp[sensorListTmp_id].update({'alarmRelay': "ON" })
+      deviceListTmp[deviceListTmp_id].update({'alarmRelay': "ON" })
     else:
-      sensorListTmp[sensorListTmp_id].update({'alarmRelay': "OFF" })
+      deviceListTmp[deviceListTmp_id].update({'alarmRelay': "OFF" })
 
 #   HOUSE Batt Thermometer
-    sensorListTmp_id = 33
+    deviceListTmp_id = 33
     element_id = 44
-    sensorListTmp[sensorListTmp_id].update({'temperature':toTemperature(element[element_id][1])})
+    deviceListTmp[deviceListTmp_id].update({'temperature':toTemperature(element[element_id][1])})
 
 #-------------------------------------------
 #   HOUSE battery
-    sensorListTmp_id = 32
+    deviceListTmp_id = 32
     element_id = 39
     if (element[element_id][0] != 65535):
       stateOfCharge = float("%.2f" % (element[element_id][1] / 100.0))
-      sensorListTmp[sensorListTmp_id].update({'stateOfCharge': stateOfCharge })
-      sensorListTmp[sensorListTmp_id].update({'capacity.remaining':round(sensorList[sensorListTmp_id]['capacity.nominal'] *(stateOfCharge /100 ),1)  })
+      deviceListTmp[deviceListTmp_id].update({'stateOfCharge': stateOfCharge })
+      deviceListTmp[deviceListTmp_id].update({'capacity.remaining':round(deviceList[deviceListTmp_id]['capacity.nominal'] *(stateOfCharge /100 ),1)  })
     current = element[element_id + 1][1]
     if (current > 25000):
       current = (65535 - current) / float(100)
     else:
       current = current / float(100) * -1
-    sensorListTmp[sensorListTmp_id].update({'current': current})
+    deviceListTmp[deviceListTmp_id].update({'current': current})
 #Voltmeter
-    sensorListTmp[sensorListTmp_id].update({'voltage':round(element[element_id + 2][1] / float(1000),1)})
+    deviceListTmp[deviceListTmp_id].update({'voltage':round(element[element_id + 2][1] / float(1000),1)})
 #Temperature
-    sensorListTmp[sensorListTmp_id].update({'temperature':toTemperature(element[element_id + 5][1])})
+    deviceListTmp[deviceListTmp_id].update({'temperature':toTemperature(element[element_id + 5][1])})
 
 #-------------------------------------------
 
 # Front tank
-    sensorListTmp_id = 34
+    deviceListTmp_id = 34
     element_id = 45
-    sensorListTmp[sensorListTmp_id].update({'currentLevel':element[element_id][0] / float(10)})
-    sensorListTmp[sensorListTmp_id].update({'currentVolume':round(float(element[element_id][1]) / 10 * 0.26417,1)})
+    deviceListTmp[deviceListTmp_id].update({'currentLevel':element[element_id][0] / float(10)})
+    deviceListTmp[deviceListTmp_id].update({'currentVolume':round(float(element[element_id][1]) / 10 * 0.26417,1)})
 # Rear tank
-    sensorListTmp_id = 35
+    deviceListTmp_id = 35
     element_id = 46
-    sensorListTmp[sensorListTmp_id].update({'currentLevel':element[element_id][0] / float(10)})
-    sensorListTmp[sensorListTmp_id].update({'currentVolume':round(float(element[element_id][1]) / 10 * 0.26417,1)})
+    deviceListTmp[deviceListTmp_id].update({'currentLevel':element[element_id][0] / float(10)})
+    deviceListTmp[deviceListTmp_id].update({'currentVolume':round(float(element[element_id][1]) / 10 * 0.26417,1)})
 # Diesel tank
-    sensorListTmp_id = 36
+    deviceListTmp_id = 36
     element_id = 47
-    sensorListTmp[sensorListTmp_id].update({'currentLevel':element[element_id][0] / float(10)})
-    sensorListTmp[sensorListTmp_id].update({'currentVolume':round(float(element[element_id][1]) / 10 * 0.26417,1)})
+    deviceListTmp[deviceListTmp_id].update({'currentLevel':element[element_id][0] / float(10)})
+    deviceListTmp[deviceListTmp_id].update({'currentVolume':round(float(element[element_id][1]) / 10 * 0.26417,1)})
 
 #-------------------------------------------
 
 #   Inside Thermometer
-    sensorListTmp_id = 37
+    deviceListTmp_id = 37
     element_id = 48
-    sensorListTmp[sensorListTmp_id].update({'temperature':toTemperature(element[element_id][1])})
+    deviceListTmp[deviceListTmp_id].update({'temperature':toTemperature(element[element_id][1])})
 
 #-------------------------------------------
 
 #Calculations
 # Engine runs if Voltmeter is > 13.5 volt
-    if (float(sensorListTmp[26]['voltage']) > 13.5):
-      pico.append({'topic': TOPIC + "van/power", 'payload': "RUNNING"})
+    if (float(deviceListTmp[26]['voltage']) > 13.5):
+      pico.append({"topic": TOPIC + "van/power", "payload": "RUNNING"})
     else:
-      pico.append({'topic': TOPIC + "van/power", 'payload': "OFF"})
+      pico.append({"topic": TOPIC + "van/power", "payload": "OFF"})
 
 #-------------------------------------------
 
 # Populate JSON
-    for key, value in sensorListTmp.items():
+    for key, value in deviceListTmp.items():
       if (value['type'] == 'battery'):
-        pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/name", 'payload': value['name']})
-        pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/capacity/nominal", 'payload': value['capacity.nominal']})
+#        pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/name", "payload": value['name']})
+        pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/capacity/nominal", "payload": value['capacity.nominal']})
         if 'voltmeter' in value:
-          pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/voltage", 'payload': value['voltage']})
+          pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/voltage", "payload": value['voltage']})
         if 'temperature' in value:
-          pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/temperature", 'payload': value['temperature']})
+          pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/temperature", "payload": value['temperature']})
         if 'current' in value:
-          pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/current", 'payload': value['current']})
+          pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/current", "payload": value['current']})
         if 'capacity.remaining' in value:
-          pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/capacity/remaining", 'payload': value['capacity.remaining']})
-          pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/stateOfCharge", 'payload': value['stateOfCharge']})
+          pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/capacity/remaining", "payload": value['capacity.remaining']})
+          pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/stateOfCharge", "payload": value['stateOfCharge']})
         if 'capacity.timeRemaining' in value:
-          pico.append({'topic': TOPIC + "electrical/batteries/" +value['name'] + "/capacity/timeRemaining", 'payload': value['capacity.timeRemaining']})
+          pico.append({"topic": TOPIC + "electrical/batteries/" +value['name'] + "/capacity/timeRemaining", "payload": value['capacity.timeRemaining']})
       if (value['type'] == 'barometer'):
-        pico.append({'topic': TOPIC + "environment/pressure", 'payload': value['pressure']})
+        pico.append({"topic": TOPIC + "environment/pressure", "payload": value['pressure']})
       if (value['type'] == 'thermometer'):
-        pico.append({'topic': TOPIC + "environment/temperature/" +value['name'] + "/name", 'payload': value['name']})
-        pico.append({'topic': TOPIC + "environment/temperature/" +value['name'] ,'payload': value['temperature']})
+#        pico.append({"topic": TOPIC + "environment/temperature/" +value['name'] + "/name", "payload": value['name']})
+        pico.append({"topic": TOPIC + "environment/temperature/" +value['name'] ,"payload": value['temperature']})
       if (value['type'] == 'tank'):
-        pico.append({'topic': TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/currentLevel", 'payload': value['currentLevel']})
-        pico.append({'topic': TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/currentVolume", 'payload': value['currentVolume']})
-        pico.append({'topic': TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/name", 'payload': value['name']})
-        pico.append({'topic': TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/type", 'payload': value['fluid']})
-        pico.append({'topic': TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/capacity", 'payload': value['capacity']})
+        pico.append({"topic": TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/currentLevel", "payload": value['currentLevel']})
+        pico.append({"topic": TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/currentVolume", "payload": value['currentVolume']})
+#        pico.append({"topic": TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/name", "payload": value['name']})
+#        pico.append({"topic": TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/type", "payload": value['fluid']})
+        pico.append({"topic": TOPIC + "tanks/" + value['fluid'] + "/" +value['name'] + "/capacity", "payload": value['capacity']})
       if (value['type'] == 'alarmRelay'):
-        pico.append({'topic': TOPIC + "alarmRelay", 'payload': value['alarmRelay']})
+        pico.append({"topic": TOPIC + "alarmRelay", "payload": value['alarmRelay']})
       if (value['type'] == 'voltmeter'):
-        pico.append({'topic': TOPIC + "electrical/voltmeter/" +value['name'] + "/voltage", 'payload': value['voltage']})
-        pico.append({'topic': TOPIC + "electrical/voltmeter/" +value['name'] + "/name", 'payload': value['name']})
+        pico.append({"topic": TOPIC + "electrical/voltmeter/" +value['name'] + "/voltage", "payload": value['voltage']})
+#        pico.append({"topic": TOPIC + "electrical/voltmeter/" +value['name'] + "/name", "payload": value['name']})
       if (value['type'] == 'ohmmeter'):
-        pico.append({'topic': TOPIC + "electrical/ohmmeter/" +value['name'] + "/ohms", 'payload': value['ohms']})
-        pico.append({'topic': TOPIC + "electrical/ohmmeter/" +value['name'] + "/name", 'payload': value['name']})
+        pico.append({"topic": TOPIC + "electrical/ohmmeter/" +value['name'] + "/ohms", "payload": value['ohms']})
+#        pico.append({"topic": TOPIC + "electrical/ohmmeter/" +value['name'] + "/name", "payload": value['name']})
       if (value['type'] == 'ammeter'):
-        pico.append({'topic': TOPIC + "electrical/ammeter/" +value['name'] + "/current", 'payload': value['current']})
-        pico.append({'topic': TOPIC + "electrical/ammeter/" +value['name'] + "/name", 'payload': value['name']})
+        pico.append({"topic": TOPIC + "electrical/ammeter/" +value['name'] + "/current", "payload": value['current']})
+#        pico.append({"topic": TOPIC + "electrical/ammeter/" +value['name'] + "/name", "payload": value['name']})
 
 
 
-    old_pico_topics = {d['topic']:d for d in old_pico}
-    pico_topics = {d['topic']:d for d in pico}
+    old_pico_topics = {d["topic"]:d for d in old_pico}
+    pico_topics = {d["topic"]:d for d in pico}
 
     assert len(old_pico_topics) == len(old_pico), "DUPLICATE TOPICS DETECTED"
     assert len(pico_topics) == len(pico), "DUPLICATE TOPICS DETECTED"
@@ -599,7 +603,7 @@ while True:
 
 # for keys that are in both pico and old_pico, check if there's a payload difference
     for k in set(pico_topics) & set(old_pico_topics):
-        if pico_topics[k]['payload'] != old_pico_topics[k]['payload']:
+        if pico_topics[k]["payload"] != old_pico_topics[k]["payload"]:
 
             diff.append(pico_topics[k])
 
@@ -607,6 +611,8 @@ while True:
     for k in set(pico_topics) - set(old_pico_topics):
         diff.append(pico_topics[k])
 
+    counter = counter + 1
+    diff.append({"topic": TOPIC + "counter", "payload": counter})
 
     old_pico = copy.deepcopy(pico)
 
